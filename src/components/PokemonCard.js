@@ -14,7 +14,8 @@ class PokemonCard extends React.Component {
   }
 
   render() {
-    
+    let found=this.props.stats.find(stat => stat.name === 'hp');
+    // console.log('value', found.value)
     return (
       <Card >
         <div onClick={this.changeToBack} >
@@ -26,7 +27,8 @@ class PokemonCard extends React.Component {
           <div className="extra content">
             <span>
               <i className="icon heartbeat red" />
-              HP
+              {found.value}
+              
             </span>
           </div>
         </div>

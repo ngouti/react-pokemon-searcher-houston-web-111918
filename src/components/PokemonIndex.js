@@ -10,8 +10,7 @@ class PokemonPage extends React.Component {
     
     state = {
       pokemon: [],
-      filtered: [],
-      value: ' '
+      searchValue: ''
     }
   
   
@@ -24,56 +23,32 @@ class PokemonPage extends React.Component {
       )
   } //setting attribute in fetch before setting state
 
-
-  // componentWillMount(){
-  //   this.setState({
-  //     pokemon,
-  //     filtered: pokemon
-  //   })
-  // }
   
- 
-  
-
-  searching = (data) => {
+  searching= (date) => {
     this.setState({
-      value: data.value
+      searchValue: date.value
     })
-   
-    this.state.pokemon.map(poke => {
-      var name = []
-     name.push(poke.name)
-     name.includes(this.state.value) ? 
-     this.setState({ 
-      filtered: [this.state.pokemon.filter(pok => pok.name === this.state.value)]
-     })
-      :
-      this.setState({ 
-        filtered: this.state.pokemon
-       })
-    })  
-    
   }
 
-
-
+  addPoke = (poke) => {
+    this.setState({
+      pokemon: [...this.state.pokemon, poke]
+    })
+  }
 
   render() {
-    console.log(this.state.filtered)
-    
+    let filteredPoke = this.state.pokemon.filter(poke => poke.name.includes(this.state.searchValue))
     return (
       <div>
         <h1>Pokemon Searcher</h1>
         <br />
         <Search onSearchChange={_.debounce((e, data) => this.searching(data), 500)} showNoResults={false} />
         <br />
-       {this.state.filtered.length > 0 ? 
-        <PokemonCollection poke={this.state.filtered} handleClick={this.changeToBack}/> 
-       :
-        <PokemonCollection poke={this.state.pokemon} handleClick={this.changeToBack}/> 
-      } 
+       
+        <PokemonCollection poke={filteredPoke} handleClick={this.changeToBack}/> 
+       
         <br />
-        <PokemonForm />
+        <PokemonForm addPoke={this.addPoke}/>
       </div>
     )
   }
